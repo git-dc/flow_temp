@@ -15,6 +15,9 @@ const char* ssid = "2.4g";
 const char* password = "dauyndauyn";
 const char* mqtt_server = "lubuntuN7";
 const char* mqtt_topic = "outTopic";
+char msg[50];
+WiFiClient espClient;
+PubSubClient client(espClient);
 // cnk vars end;
 
 // flow vars begin:
@@ -41,14 +44,10 @@ void flow () // Interrupt function
    flow_frequency++;
 }
 
-WiFiClient espClient;
-PubSubClient client(espClient);
-char msg[50];
-
 void setup_wifi() 
 {
   delay(10);
-  // We start by connecting to a WiFi network
+  // wifi network cnk begin:
   Serial.println();
   Serial.print("Connecting to ");
   Serial.println(ssid);
@@ -57,13 +56,14 @@ void setup_wifi()
     delay(200);
     Serial.print(".");
   }
-
+  
   randomSeed(micros());
 
   Serial.println("");
   Serial.println("WiFi connected");
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
+  // wifi network cnk end;
 }
 
 void callback(char* topic, byte* payload, unsigned int length) 
@@ -117,7 +117,6 @@ void reconnect()
 
 void setup() 
 {
-  //pinMode(BUILTIN_LED, OUTPUT);     // Initialize the BUILTIN_LED pin as an output
   Serial.begin(115200);
   setup_wifi();
   client.setServer(mqtt_server, 1883);
